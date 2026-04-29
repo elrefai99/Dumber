@@ -1,7 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"dumber/cmd"
+	"fmt"
+)
 
 func main() {
+	cmd.Execute()
+
 	fmt.Println("hi")
 }
