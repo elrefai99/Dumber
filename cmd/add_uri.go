@@ -12,6 +12,7 @@ import (
 
 type AddURIStruct struct {
 	NameFile string `json:"name_file"`
+	DB       string `json:"db"`
 	Uri      string `json:"uri"`
 	Status   string `json:"status"`
 	Name     string `json:"name"`
@@ -25,10 +26,6 @@ func readLine(prompt string) string {
 	return strings.TrimSpace(scanner.Text())
 }
 
-func CreateAsDefault() {
-
-}
-
 func CobraCreate() *cobra.Command {
 	return &cobra.Command{
 		Use:   "create",
@@ -37,12 +34,14 @@ func CobraCreate() *cobra.Command {
 
 			name := readLine("Please enter name of " + "... ")
 			nameFile := readLine("Please enter name of file " + "... ")
+			db := readLine("Please enter db of " + name + "... ")
 			uri := readLine("Please add uri of " + name + "... ")
 			status := readLine("Please enter status of " + name + "... ")
 
 			file := []AddURIStruct{}
 			file = append(file, AddURIStruct{
 				Uri:      uri,
+				DB:       db,
 				Name:     name,
 				Status:   status,
 				NameFile: nameFile,

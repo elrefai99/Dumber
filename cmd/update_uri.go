@@ -20,6 +20,7 @@ func UpdateUri() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			nameFile := readLine("Please enter name of file " + "... ")
 			name := readLine("Please enter name of " + "... ")
+			db := readLine("Please enter db of " + name + "... ")
 			uri := readLine("Please add uri of " + name + "... ")
 			status := readLine("Please enter status of " + name + "... ")
 
@@ -36,6 +37,9 @@ func UpdateUri() *cobra.Command {
 			for i := range data {
 				if name != "" {
 					data[i].Name = name
+				}
+				if db != "" {
+					data[i].DB = db
 				}
 				if uri != "" {
 					data[i].Uri = uri
