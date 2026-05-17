@@ -31,13 +31,13 @@ func DumbDB() *cobra.Command {
 				return err
 			}
 
-			homeDir, err := os.UserHomeDir()
-			if err != nil {
-				return err
-			}
-			out := filepath.Join(homeDir, "Downloads", "backup", "dumber-export", time.Now().Format("2006-01-02"))
-			os.Mkdir(out, 0755)
+			os.Mkdir("backup", 0755)
 			for _, data := range dbSettings {
+				homeDir, err := os.UserHomeDir()
+				if err != nil {
+					return err
+				}
+				out := filepath.Join(homeDir, "Downloads", "backup", "dumber-export", time.Now().Format("2006-01-02"))
 				dumb.Dumb(data.Name, out, data.Uri, true)
 
 			}
