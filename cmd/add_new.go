@@ -7,42 +7,12 @@ import (
 	"os"
 	"strings"
 
+	"dumber/cmd/shared"
+
 	"github.com/spf13/cobra"
 )
 
-type AddURIStruct struct {
-	ID     int32  `json:"id"`
-	DB     string `json:"db"`
-	Uri    string `json:"uri"`
-	Status string `json:"status"`
-	Name   string `json:"name"`
-}
-
-const dataFilePath string = "json/data.json"
-
-func loadExistingData() ([]AddURIStruct, error) {
-	file := []AddURIStruct{}
-
-	raw, err := os.ReadFile(dataFilePath)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return file, nil
-		}
-		return nil, err
-	}
-
-	if len(strings.TrimSpace(string(raw))) == 0 {
-		return file, nil
-	}
-
-	if err := json.Unmarshal(raw, &file); err != nil {
-		return nil, err
-	}
-
-	return file, nil
-}
-
-func findExisting(file []AddURIStruct, name, uri string) *AddURIStruct {
+func findExisting(file []shared.AddURIStruct, name, uri string) *shared.AddURIStruct {
 	for i := range file {
 		if strings.EqualFold(file[i].Name, name) || strings.EqualFold(file[i].Uri, uri) {
 			return &file[i]
@@ -69,7 +39,7 @@ func CobraCreate() *cobra.Command {
 			uri := readLine("Please add uri of " + name + "... ")
 			status := readLine("Please enter status of " + name + "... ")
 
-			file, err := loadExistingData()
+			file, err := shared.LoadExistingData()
 			if err != nil {
 				return err
 			}
@@ -80,7 +50,7 @@ func CobraCreate() *cobra.Command {
 				return nil
 			}
 
-			file = append(file, AddURIStruct{
+			file = append(file, shared.AddURIStruct{
 				ID:     int32(len(file) + 1),
 				Uri:    uri,
 				DB:     db,
@@ -95,7 +65,7 @@ func CobraCreate() *cobra.Command {
 			}
 
 			os.Mkdir("json", 0755)
-			os.WriteFile(dataFilePath, jsonFile, 0644)
+			os.WriteFile(shared.DataFilePath, jsonFile, 0644)
 			fmt.Println("data added successfully")
 			return nil
 		},
